@@ -136,7 +136,7 @@ function render(){
   const item = currentItem();
   $("wordText").textContent = item.word;
   $("meaningBox").textContent = item.meaning;
-  $("meaningBox").style.display = (state.mode === "flash" ? "" : "none");
+  $("meaningBox").style.display = (state.mode === "flash" ? "block" : "none");
 
   $("prevBtn").disabled = (state.idx === 0);
   $("nextBtn").disabled = false;
@@ -199,7 +199,7 @@ function prev(){
 }
 
 function showMeaning(){
-  $("meaningBox").style.display = "";
+  $("meaningBox").style.display = "block";
 }
 
 function showSummary(){
