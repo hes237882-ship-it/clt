@@ -4,6 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>워드맥스5 단어테스트</title>
+  <!-- 파비콘/홈화면 아이콘 (icons 폴더 기준) -->
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#111111" />
   <style>
@@ -13,7 +16,10 @@
     header { position:sticky; top:0; background:rgba(255,255,255,.95); backdrop-filter: blur(8px); border-bottom:1px solid var(--line); z-index:10; }
     .wrap { max-width: 820px; margin: 0 auto; padding: 14px 16px; }
     h1 { font-size: 18px; margin:0; }
-    .sub { font-size: 12px; color:var(--muted); margin-top:4px; }
+    
+    .brand{display:flex; align-items:center; gap:10px;}
+    .logo{width:34px; height:34px; border-radius:10px; border:1px solid var(--line); background:#fff; object-fit:cover;}
+.sub { font-size: 12px; color:var(--muted); margin-top:4px; }
     .grid { display:grid; gap:12px; }
     .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; }
     .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
@@ -41,9 +47,12 @@
   <header>
     <div class="wrap">
       <div class="row">
-        <div>
-          <h1>워드맥스5 단어테스트</h1>
-          <div class="sub">Day별 선택 → 뜻 4지선다 퀴즈 + 발음(스피커)</div>
+        <div class="brand">
+          <img src="icons/icon-192.png" class="logo" alt="CLT 로고" />
+          <div>
+            <h1>워드맥스5 단어테스트</h1>
+            <div class="sub">Day별 선택 → 뜻 4지선다 퀴즈 + 발음(스피커)</div>
+          </div>
         </div>
         <div class="spacer"></div>
         <button id="installBtn" class="primary" style="display:none;">앱 설치</button>
