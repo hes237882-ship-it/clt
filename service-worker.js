@@ -1,5 +1,5 @@
 // 캐시 버전(업데이트가 안 보일 때 이 값을 올리면 강제 갱신됩니다)
-const CACHE_NAME = "wm5-cache-v1-v3";
+const CACHE_NAME = "wm5-cache-v1-v4";
 const CORE_ASSETS = [
   "./",
   "./index.html",

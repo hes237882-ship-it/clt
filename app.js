@@ -136,7 +136,7 @@ function render(){
   const item = currentItem();
   $("wordText").textContent = item.word;
   $("meaningBox").textContent = item.meaning;
-  $("meaningBox").style.display = (state.mode === "quiz") ? "none" : "";
+  $("meaningBox").style.display = (state.mode === "flash" ? "" : "none");
 
   $("prevBtn").disabled = (state.idx === 0);
   $("nextBtn").disabled = false;
