@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>워드맥스5 단어테스트</title>
+  <!-- 파비콘/홈화면 아이콘 (icons 폴더 기준) -->
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#111111" />
+  <style>
+    :root { --bg:#ffffff; --fg:#111; --muted:#6b7280; --card:#f7f7f7; --line:#e5e7eb; --btn:#111; --btnfg:#fff; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background:var(--bg); color:var(--fg); }
+    header { position:sticky; top:0; background:rgba(255,255,255,.95); backdrop-filter: blur(8px); border-bottom:1px solid var(--line); z-index:10; }
+    .wrap { max-width: 820px; margin: 0 auto; padding: 14px 16px; }
+    h1 { font-size: 18px; margin:0; }
+    
+    .brand{display:flex; align-items:center; gap:10px;}
+    .logo{width:34px; height:34px; border-radius:10px; border:1px solid var(--line); background:#fff; object-fit:cover;}
+.sub { font-size: 12px; color:var(--muted); margin-top:4px; }
+    .grid { display:grid; gap:12px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; }
+    .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .spacer { flex:1; }
+    button { appearance:none; border:1px solid var(--line); background:#fff; border-radius:12px; padding:10px 12px; font-size:14px; cursor:pointer; }
+    button.primary { background:var(--btn); color:var(--btnfg); border-color:var(--btn); }
+    button:disabled { opacity:.5; cursor:not-allowed; }
+    select { border:1px solid var(--line); background:#fff; border-radius:12px; padding:10px 12px; font-size:14px; }
+    .word { font-size: 34px; font-weight:800; letter-spacing:.2px; margin: 10px 0 6px; }
+    .meaning { font-size: 18px; padding:10px 12px; border-radius:12px; border:1px dashed var(--line); background:#fff; display:none; }
+    .pill { font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid var(--line); background:#fff; color:var(--muted); }
+    .choices { display:grid; gap:10px; margin-top:12px; }
+    .choice { text-align:left; padding:12px; border-radius:14px; border:1px solid var(--line); background:#fff; }
+    .choice.good { border-color:#16a34a; }
+    .choice.bad { border-color:#dc2626; }
+    .tiny { font-size:12px; color:var(--muted); }
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.35); display:none; align-items:flex-end; justify-content:center; padding:16px; z-index:50; }
+    .modal { width:min(820px, 100%); background:#fff; border-radius:18px; border:1px solid var(--line); padding:14px; max-height:70vh; overflow:auto; }
+    .days { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:10px; }
+    @media (max-width:520px){ .days{ grid-template-columns: repeat(2, minmax(0,1fr)); } .word{font-size:30px;} }
+    footer { padding:26px 0; color:var(--muted); font-size:12px; text-align:center; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="row">
+        <div class="brand">
+          <img src="icons/icon-192.png" class="logo" alt="CLT 로고" />
+          <div>
+            <h1>워드맥스5 단어테스트</h1>
+            <div class="sub">Day별 선택 → 뜻 4지선다 퀴즈 + 발음(스피커)</div>
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <button id="installBtn" class="primary" style="display:none;">앱 설치</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap grid">
+    <div class="card">
+      <div class="row">
+        <button id="dayBtn" class="primary">Day 선택</button>
+        <span id="dayPill" class="pill">Day1</span>
+        <span id="modePill" class="pill">퀴즈 모드</span>
+        <span class="spacer"></span>
+        <button id="modeBtn">모드 변경</button>
+        <button id="resetBtn">리셋</button>
+      </div>
+      <div class="tiny" id="progressText" style="margin-top:10px;">불러오는 중…</div>
+    </div>
+
+    <div class="card" id="quizCard" style="display:none;">
+      <div class="row">
+        <button id="speakBtn" title="발음 듣기">🔊 발음</button>
+        <div class="spacer"></div>
+        <span id="scorePill" class="pill">0 / 0</span>
+      </div>
+
+      <div class="word" id="wordText">—</div>
+
+      <div class="meaning" id="meaningBox"></div>
+
+      <div class="choices" id="choices"></div>
+
+      <div class="row" style="margin-top:14px;">
+        <button id="showBtn">뜻 보기</button>
+        <button id="prevBtn">이전</button>
+        <button id="nextBtn" class="primary">다음</button>
+        <span class="spacer"></span>
+        <button id="wrongBtn">오답만</button>
+      </div>
+      <div class="tiny" style="margin-top:10px;">
+        * 발음은 기기/브라우저 TTS(Web Speech) 기능을 사용합니다. (일부 기기에서 음성이 다를 수 있어요)
+      </div>
+    </div>
+
+    <div class="card" id="summaryCard" style="display:none;">
+      <div class="row">
+        <div style="font-weight:700;">결과</div>
+        <span class="spacer"></span>
+        <button id="restartBtn" class="primary">다시 풀기</button>
+      </div>
+      <div id="summaryText" style="margin-top:10px;"></div>
+    </div>
+  </main>
+
+  <div class="modal-backdrop" id="dayModal">
+    <div class="modal">
+      <div class="row" style="margin-bottom:10px;">
+        <div style="font-weight:800;">Day 선택</div>
+        <span class="spacer"></span>
+        <button id="closeModalBtn">닫기</button>
+      </div>
+      <div class="days" id="dayGrid"></div>
+    </div>
+  </div>
+
+  <footer class="wrap">
+    오프라인 사용 가능 · 데이터는 기기 내부에 캐시됩니다
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
