@@ -1,5 +1,4 @@
-// 캐시 버전(업데이트가 안 보일 때 이 값을 올리면 강제 갱신됩니다)
-const CACHE_NAME = "wm5-cache-v1-v4";
+const CACHE_NAME = "wm5-cache-v1";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -7,9 +6,7 @@ const CORE_ASSETS = [
   "./data.json",
   "./manifest.json",
   "./icon-192.png",
-  "./icon-512.png",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png"
+  "./icon-512.png"
 ];
 
 self.addEventListener("install", (event) => {
